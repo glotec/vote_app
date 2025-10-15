@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -32,21 +26,24 @@ model UserRole {
 model Candident {
   cid    String  @id
   name   String
-  class  String
-  status Boolean
+  cycle  String
+  status Boolean @default(true)
+  pics   Pic[]
   votes  Vote[]
 }
 
 model Pic {
-  pid  String @id
+  pid  String    @id
   name String
+  cand String
+  pcan Candident @relation(fields: [cand], references: [cid])
 }
 
 model Student {
   mat      String @id
   fullname String
   class    String
-  votes    Vote[]
+  votes    Vote?
 }
 
 model Vote {

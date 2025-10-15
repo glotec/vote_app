@@ -1,34 +1,61 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { PicService } from './pic.service';
-import { CreatePicDto } from './dto/create-pic.dto';
-import { UpdatePicDto } from './dto/update-pic.dto';
+import { CreatePicDto } from './dto';
 
-@Controller('pic')
+@Controller('api/vote/v1/pics')
 export class PicController {
-  constructor(private readonly picService: PicService) {}
+  constructor(private readonly picturesService: PicService) {}
 
-  @Post()
-  create(@Body() createPicDto: CreatePicDto) {
-    return this.picService.create(createPicDto);
+  @Post('create')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const uniqueSufix =
+            Date.now() + '_' + Math.round(Math.random() * 1e9);
+          cb(null, uniqueSufix + extname(file.originalname));
+        },
+      }),
+    }),
+  )
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() dto: CreatePicDto,
+  ) {
+    return this.picturesService.create(file, dto);
   }
 
-  @Get()
+  @Get('all')
   findAll() {
-    return this.picService.findAll();
+    return this.picturesService.getAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.picService.findOne(+id);
+    return this.picturesService.getOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePicDto: UpdatePicDto) {
-    return this.picService.update(+id, updatePicDto);
+  update(@Param('id') id: string, @Body() dto: CreatePicDto) {
+    return this.picturesService.updatePicture(dto, id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.picService.remove(+id);
+    return this.picturesService.deletePicture(id);
   }
 }

@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { VoteService } from './vote.service';
-import { CreateVoteDto } from './dto/create-vote.dto';
-import { UpdateVoteDto } from './dto/update-vote.dto';
+import { CreateVoteDto } from './dto';
 
-@Controller('vote')
+@Controller('api/vote/v1/vote')
 export class VoteController {
-  constructor(private readonly voteService: VoteService) {}
+  constructor(private readonly communeService: VoteService) {}
 
-  @Post()
-  create(@Body() createVoteDto: CreateVoteDto) {
-    return this.voteService.create(createVoteDto);
+  @Post('create')
+  create(@Body() dto: CreateVoteDto) {
+    return this.communeService.create(dto);
   }
 
-  @Get()
+  @Get('all')
   findAll() {
-    return this.voteService.findAll();
+    return this.communeService.getAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.voteService.findOne(+id);
+    return this.communeService.getOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVoteDto: UpdateVoteDto) {
-    return this.voteService.update(+id, updateVoteDto);
+  update(@Param('id') id: string, @Body() dto: CreateVoteDto) {
+    return this.communeService.Updatevote(dto, id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.voteService.remove(+id);
+    return this.communeService.deleteVote(id);
   }
 }

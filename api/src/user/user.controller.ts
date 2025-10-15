@@ -1,34 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UseGuards, Controller, Get } from '@nestjs/common';
+import { Users } from '@prisma/client';
+import { AuthGuard } from '../auth/guard';
+import { GetUser } from '../auth/decorator';
 
-@Controller('user')
+@Controller('api/vote/v1/users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Get('me')
+  @UseGuards(AuthGuard)
+  getMe(
+    @GetUser() user: Partial<Users>, // Use Partial to handle optional fields
+  ) {
+    return {
+      username: user.username,
+      name: user.fullname,
+      is_connected: user.is_connected,
+      activated: user.activated,
+    }; // Return only necessary fields
   }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
+  // getMe() {
+  //   return { message: 'Authenticated' };
+  // }
 }

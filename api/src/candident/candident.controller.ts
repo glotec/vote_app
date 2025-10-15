@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CandidentService } from './candident.service';
-import { CreateCandidentDto } from './dto/create-candident.dto';
-import { UpdateCandidentDto } from './dto/update-candident.dto';
+import { CreateCandidentDto } from './dto';
 
-@Controller('candident')
+@Controller('api/vote/v1/candident')
 export class CandidentController {
   constructor(private readonly candidentService: CandidentService) {}
 
-  @Post()
-  create(@Body() createCandidentDto: CreateCandidentDto) {
-    return this.candidentService.create(createCandidentDto);
+  @Post('create')
+  create(@Body() dto: CreateCandidentDto) {
+    return this.candidentService.create(dto);
   }
 
-  @Get()
+  @Get('all')
   findAll() {
-    return this.candidentService.findAll();
+    return this.candidentService.getAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.candidentService.findOne(+id);
+    return this.candidentService.getOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCandidentDto: UpdateCandidentDto) {
-    return this.candidentService.update(+id, updateCandidentDto);
+  update(@Param('id') id: string, @Body() dto: CreateCandidentDto) {
+    return this.candidentService.updateAvenue(dto, id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.candidentService.remove(+id);
+    return this.candidentService.deleteAvenue(id);
   }
 }

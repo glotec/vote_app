@@ -1,15 +1,11 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateVoteDto {
+export class SigninDto {
   @IsString()
   @IsNotEmpty()
-  vid!: string;
+  username!: string;
 
   @IsString()
   @IsNotEmpty()
-  code!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  candident!: string;
+  password!: string;
 }
