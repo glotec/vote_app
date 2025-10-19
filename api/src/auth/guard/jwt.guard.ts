@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { RedisService } from 'src/redis/redis.service';
 import { AuthService } from '../auth.service';
 import { Request } from 'express';
+import { RedisService } from '../../redis/redis.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

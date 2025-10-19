@@ -34,8 +34,8 @@ model Candident {
 
 model Pic {
   pid  String    @id
-  name String
   cand String
+  pic  String
   pcan Candident @relation(fields: [cand], references: [cid])
 }
 
@@ -43,13 +43,16 @@ model Student {
   mat      String @id
   fullname String
   class    String
-  votes    Vote?
 }
 
 model Vote {
   vid       String    @id
-  code      String    @unique
   candident String
   cvote     Candident @relation(fields: [candident], references: [cid])
-  student   Student   @relation(fields: [code], references: [mat])
+}
+
+model Votes {
+  id        Int      @id @default(autoincrement())
+  candident String
+  date      DateTime
 }

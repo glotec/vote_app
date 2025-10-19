@@ -15,7 +15,7 @@ import { extname } from 'path';
 import { PicService } from './pic.service';
 import { CreatePicDto } from './dto';
 
-@Controller('api/vote/v1/pics')
+@Controller('api/vote/v1/pic')
 export class PicController {
   constructor(private readonly picturesService: PicService) {}
 
@@ -36,6 +36,8 @@ export class PicController {
     @UploadedFile() file: Express.Multer.File,
     @Body() dto: CreatePicDto,
   ) {
+    console.log('file:', file);
+    console.log('dto:', dto);
     return this.picturesService.create(file, dto);
   }
 

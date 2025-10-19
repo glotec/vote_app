@@ -11,6 +11,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { RedisModule } from './redis/redis.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { VotesModule } from './votes/votes.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PrismaModule } from './prisma/prisma.module';
     VoteModule,
     RedisModule,
     PrismaModule,
+    VotesModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],

@@ -5,9 +5,9 @@ export class CreateVoteDto {
   @IsNotEmpty()
   vid!: string;
 
-  @IsString()
-  @IsNotEmpty()
-  code!: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // code!: string;
 
   @IsString()
   @IsNotEmpty()

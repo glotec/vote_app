@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreatePicDto {
   @IsString()
@@ -6,8 +6,8 @@ export class CreatePicDto {
   pid!: string;
 
   @IsString()
-  @IsNotEmpty()
-  name!: string;
+  @IsOptional()
+  pic?: string;
 
   @IsString()
   @IsNotEmpty()

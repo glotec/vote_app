@@ -17,7 +17,7 @@ export class PicService {
       const pic = await this.prismaService.pic.create({
         data: {
           pid: dto.pid,
-          name: file.filename,
+          pic: file.filename,
           cand: dto.cand,
         },
       });
@@ -39,7 +39,11 @@ export class PicService {
   async getAll() {
     try {
       const [pictures, count] = await this.prismaService.$transaction([
-        this.prismaService.pic.findMany(),
+        this.prismaService.pic.findMany({
+          include: {
+            pcan: true,
+          },
+        }),
         this.prismaService.pic.count(),
       ]);
       return {
@@ -66,7 +70,7 @@ export class PicService {
           pid: pid,
         },
         data: {
-          name: dto.name,
+          pic: dto.pic,
           cand: dto.cand,
         },
       });

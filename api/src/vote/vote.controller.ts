@@ -24,6 +24,16 @@ export class VoteController {
     return this.communeService.getAll();
   }
 
+  @Get('count')
+  getCount() {
+    return this.communeService.getCount();
+  }
+
+  @Get('vcount')
+  getCountD() {
+    return this.communeService.getCountData();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.communeService.getOne(id);
